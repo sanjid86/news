@@ -33,25 +33,26 @@ const loadNews =async(id) =>{
     const url =`https://openapi.programming-hero.com/api/news/category/0${id}`
          const res =await fetch (url)
          const data = await res.json()
-         let x;
+         console.log(data)
+         let totalData;
          if(data.data.length>0){
-         x=`${data.data.length}`
+             totalData =`${data.data.length}data found on this category`
          }
-         else{
-         x=0;
-         }
-    setTimeout(() => {        
+         setTimeout(() => {        
          if(data.data.length===0){
             const spinnerContainer = document.getElementById('spinner');
             spinnerContainer.style.display = 'block';
-        //     const foundItems = document.getElementById('founded-items')
-        //    foundItems.innerText =x;
-            // console.log(spinnerContainer,'block');
+
             const cardContainer = document.getElementById('card-container');
             cardContainer.textContent ="";
             spinnerContainer.style.display = 'none';
+
+            const addText = document.getElementById('founded-items');
+            addText.innerText = 'No data found on this category';
          }
          else{
+            const addText = document.getElementById('founded-items');
+            addText.innerText = totalData;
             const newsCategory = data.data;
             const categorySort = newsCategory.sort((a,b)=>b.total_view - a.total_view);
             displayNews(categorySort) 
@@ -62,17 +63,12 @@ const loadNews =async(id) =>{
    
 }
 
-
 const displayNews =(newses) =>{
     const cardContainer = document.getElementById('card-container');
     cardContainer.textContent =""
     // founded news_category
     const foundedNews = document.getElementById('news-founded');
     foundedNews.classList.remove('hidden')
-
-
-    // founded-items-field
-    // spinner 
    
     newses.forEach(news => {
         
